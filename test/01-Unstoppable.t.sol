@@ -47,6 +47,7 @@ contract TestUnstoppable is BaseFixture {
     }
 
     function test() public {
+        // Sending tokens without minting the corresponding vault shares makes the vault revert with `InvalidBalance()`
         vm.prank(player);
         token.transfer(address(vault), 1);
 
