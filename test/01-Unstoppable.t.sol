@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-import { BaseFixture } from "test/00-Fixture.sol";
+import { BaseFixture } from "test/utils/Fixtures.sol";
 
 import { DamnValuableToken } from "src/DamnValuableToken.sol";
 import { ReceiverUnstoppable } from "src/01-Unstoppable/ReceiverUnstoppable.sol";
@@ -47,6 +47,9 @@ contract TestUnstoppable is BaseFixture {
     }
 
     function test() public {
+        vm.prank(player);
+        token.transfer(address(vault), 1);
+
         checkSuccess();
     }
 }
