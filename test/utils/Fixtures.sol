@@ -17,5 +17,13 @@ contract BaseFixture is Test {
         (deployer, deployerKey) = makeAddrAndKey("deployer");
         (player, playerKey) = makeAddrAndKey("player");
         (someUser, someUserKey) = makeAddrAndKey("someUser");
+        deal(deployer, 1_000_000 ether);
+        deal(player, 1_000_000 ether);
+        deal(someUser, 1_000_000 ether);
+    }
+
+    function sendEther(address to, uint256 amount) public {
+        (bool success,) = to.call{ value: amount }("");
+        require(success, "failed to send ether");
     }
 }
