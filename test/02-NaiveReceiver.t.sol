@@ -5,6 +5,7 @@ import { BaseFixture } from "test/utils/Fixtures.sol";
 
 import { NaiveReceiverLenderPool } from "src/02-NaiveReceiver/NaiveReceiverLenderPool.sol";
 import { FlashLoanReceiver } from "src/02-NaiveReceiver/FlashLoanReceiver.sol";
+import { Attack } from "src/02-NaiveReceiver/Attack.sol";
 
 contract TestUnstoppable is BaseFixture {
     uint256 public constant ETHER_IN_POOL = 1000 ether;
@@ -39,6 +40,8 @@ contract TestUnstoppable is BaseFixture {
     }
 
     function test() public {
+        new Attack(pool, receiver);
+
         checkSuccess();
     }
 }
