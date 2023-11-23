@@ -40,6 +40,7 @@ contract TestUnstoppable is BaseFixture {
     }
 
     function test() public {
+        vm.prank(player);
         new Attack(pool, receiver);
 
         checkSuccess();
