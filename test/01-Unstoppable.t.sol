@@ -16,16 +16,20 @@ contract TestUnstoppable is BaseFixture {
     ReceiverUnstoppable receiver;
 
     function setUp() public {
+        vm.startPrank(deployer);
         token = new DamnValuableToken();
         vault = new UnstoppableVault(token, deployer,deployer);
         token.approve(address(vault), TOKENS_IN_VAULT);
         vault.deposit(TOKENS_IN_VAULT, deployer);
         token.transfer(player, INITIAL_PLAYER_TOKEN_BALANCE);
+        vm.stopPrank();
+        vm.prank(someUser);
         receiver = new ReceiverUnstoppable(address(vault));
-        receiver.executeFlashLoan(100 ether);
     }
 
     function test_setUp() public {
+        vm.prank(someUser);
+        receiver.executeFlashLoan(100 ether); // check that flashloans work
         assertEq(address(vault.asset()), address(token));
         assertEq(token.balanceOf(address(vault)), TOKENS_IN_VAULT);
         assertEq(vault.totalAssets(), TOKENS_IN_VAULT);
@@ -36,5 +40,10 @@ contract TestUnstoppable is BaseFixture {
         assertEq(token.balanceOf(player), INITIAL_PLAYER_TOKEN_BALANCE);
     }
 
-    function test() public { }
+    function test() public {
+        // Success condition
+        vm.expectRevert();
+        vm.prank(someUser);
+        receiver.executeFlashLoan(100 ether);
+    }
 }
