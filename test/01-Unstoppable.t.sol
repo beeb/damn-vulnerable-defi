@@ -27,6 +27,12 @@ contract TestUnstoppable is BaseFixture {
         receiver = new ReceiverUnstoppable(address(vault));
     }
 
+    function checkSuccess() internal {
+        vm.expectRevert();
+        vm.prank(someUser);
+        receiver.executeFlashLoan(100 ether);
+    }
+
     function test_setUp() public {
         vm.prank(someUser);
         receiver.executeFlashLoan(100 ether); // check that flashloans work
@@ -41,9 +47,6 @@ contract TestUnstoppable is BaseFixture {
     }
 
     function test() public {
-        // Success condition
-        vm.expectRevert();
-        vm.prank(someUser);
-        receiver.executeFlashLoan(100 ether);
+        checkSuccess();
     }
 }
