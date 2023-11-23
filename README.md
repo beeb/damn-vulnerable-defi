@@ -1,4 +1,4 @@
-## Damn Vulnerable Defi
+## Damn Vulnerable DeFi
 
 [Official Website](https://www.damnvulnerabledefi.xyz/)
 
