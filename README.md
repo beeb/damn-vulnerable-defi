@@ -1,66 +1,17 @@
-## Foundry
+## Damn Vulnerable Defi
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+[Official Website](https://www.damnvulnerabledefi.xyz/)
 
-Foundry consists of:
+Run `forge install` to get the standard library and dependencies.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+To solve a puzzle, copy the relevant contracts from
+[the official repo](https://github.com/tinchoabbate/damn-vulnerable-defi/tree/v3.0.0/contracts) into `src` directory.
 
-## Documentation
+Then, create a new test file in the `test` directory and translate the setup from the
+[official tests](https://github.com/tinchoabbate/damn-vulnerable-defi/tree/v3.0.0/test).
 
-https://book.getfoundry.sh/
+Finally, run the tests with:
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
 ```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+forge test -vvv
 ```
