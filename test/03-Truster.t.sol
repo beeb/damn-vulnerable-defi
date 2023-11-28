@@ -36,9 +36,8 @@ contract TestTruster is BaseFixture {
 
     function test() public {
         vm.prank(player);
-        Attack attack = new Attack(pool);
         // The attack contract will make the pool call `token.approve` and then transfer the tokens after the flashloan
-        attack.attack();
+        new Attack(pool);
 
         checkSuccess();
     }
