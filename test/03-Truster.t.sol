@@ -5,6 +5,7 @@ import { BaseFixture } from "test/utils/Fixtures.sol";
 
 import { DamnValuableToken } from "src/DamnValuableToken.sol";
 import { TrusterLenderPool } from "src/03-Truster/TrusterLenderPool.sol";
+import { Attack } from "src/03-Truster/Attack.sol";
 
 contract TestTruster is BaseFixture {
     uint256 public constant TOKENS_IN_POOL = 1_000_000 ether;
@@ -34,6 +35,11 @@ contract TestTruster is BaseFixture {
     }
 
     function test() public {
+        vm.prank(player);
+        Attack attack = new Attack(pool);
+        // The attack contract will make the pool call `token.approve` and then transfer the tokens after the flashloan
+        attack.attack();
+
         checkSuccess();
     }
 }
