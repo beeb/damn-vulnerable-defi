@@ -9,10 +9,12 @@
     foundry = {
       url = "github:shazow/foundry.nix/monthly"; # Use monthly branch for permanent releases
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "utils";
     };
     solc = {
       url = "github:hellwolf/solc.nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "utils";
     };
   };
 
