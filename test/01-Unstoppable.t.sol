@@ -23,18 +23,18 @@ contract TestUnstoppable is BaseFixture {
         vault.deposit(TOKENS_IN_VAULT, deployer);
         token.transfer(player, INITIAL_PLAYER_TOKEN_BALANCE);
         vm.stopPrank();
-        vm.prank(someUser);
+        vm.prank(alice);
         receiver = new ReceiverUnstoppable(address(vault));
     }
 
     function checkSuccess() internal {
         vm.expectRevert();
-        vm.prank(someUser);
+        vm.prank(alice);
         receiver.executeFlashLoan(100 ether);
     }
 
     function test_setUp() public {
-        vm.prank(someUser);
+        vm.prank(alice);
         receiver.executeFlashLoan(100 ether); // check that flashloans work
         assertEq(address(vault.asset()), address(token));
         assertEq(token.balanceOf(address(vault)), TOKENS_IN_VAULT);

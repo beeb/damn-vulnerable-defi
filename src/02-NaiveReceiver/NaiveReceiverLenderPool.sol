@@ -6,8 +6,6 @@ import "@openzeppelin/contracts/interfaces/IERC3156FlashLender.sol";
 import "@openzeppelin/contracts/interfaces/IERC3156FlashBorrower.sol";
 import "solady/src/utils/SafeTransferLib.sol";
 
-import "src/02-NaiveReceiver/FlashLoanReceiver.sol";
-
 /**
  * @title NaiveReceiverLenderPool
  * @author Damn Vulnerable DeFi (https://damnvulnerabledefi.xyz)

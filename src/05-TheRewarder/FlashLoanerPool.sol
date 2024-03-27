@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
+
 import "../DamnValuableToken.sol";
 
 /**
@@ -30,7 +31,7 @@ contract FlashLoanerPool is ReentrancyGuard {
             revert NotEnoughTokenBalance();
         }
 
-        if (!msg.sender.isContract()) {
+        if (msg.sender.code.length == 0) {
             revert CallerIsNotContract();
         }
 
