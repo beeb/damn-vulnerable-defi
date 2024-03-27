@@ -5,8 +5,8 @@
 Run `forge install` to get the standard library and dependencies.
 
 To solve a puzzle, copy the relevant contracts from
-[the official repo](https://github.com/tinchoabbate/damn-vulnerable-defi/tree/v3.0.0/contracts) into the `src` directory
-fixing imports as needed (e.g. remove `src` from `solmate` imports).
+[the official repo](https://github.com/tinchoabbate/damn-vulnerable-defi/tree/v3.0.0/contracts) into the `src`
+directory.
 
 Then, create a new test file in the `test` directory and translate the setup from the
 [official tests](https://github.com/tinchoabbate/damn-vulnerable-defi/tree/v3.0.0/test).
