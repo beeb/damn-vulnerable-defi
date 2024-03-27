@@ -27,8 +27,8 @@
           {
             packages = with pkgs; [
               foundry-bin
-              solc_0_8_23
-              (solc.mkDefault pkgs solc_0_8_23)
+              solc_0_8_24
+              (solc.mkDefault pkgs solc_0_8_24)
             ];
 
             shellHook = ''

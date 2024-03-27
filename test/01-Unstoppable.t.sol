@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity 0.8.24;
 
 import { BaseFixture } from "test/utils/Fixtures.sol";
 
@@ -18,7 +18,7 @@ contract TestUnstoppable is BaseFixture {
     function setUp() public {
         vm.startPrank(deployer);
         token = new DamnValuableToken();
-        vault = new UnstoppableVault(token, deployer,deployer);
+        vault = new UnstoppableVault(token, deployer, deployer);
         token.approve(address(vault), TOKENS_IN_VAULT);
         vault.deposit(TOKENS_IN_VAULT, deployer);
         token.transfer(player, INITIAL_PLAYER_TOKEN_BALANCE);
