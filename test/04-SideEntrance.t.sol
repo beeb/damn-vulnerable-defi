@@ -37,7 +37,6 @@ contract TestSideEntrance is BaseFixture {
         Attack attack = new Attack(pool);
 
         attack.attack();
-        attack.finalize();
 
         checkSuccess();
     }

