@@ -2,10 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     foundry = {
       url = "github:shazow/foundry.nix/monthly"; # Use monthly branch for permanent releases
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, devenv, foundry, solc } @ inputs:
+  outputs = { self, nixpkgs, utils, foundry, solc }:
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -27,20 +23,17 @@
         };
       in
       {
-        devShell = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [
-            ({ pkgs, ... }: {
-              packages = with pkgs; [
-                foundry-bin
-                solc_0_8_23
-                (solc.mkDefault pkgs solc_0_8_23)
-              ];
-              enterShell = ''
-                forge install
-              '';
-            })
-          ];
-        };
+        devShells.default = pkgs.mkShell
+          {
+            packages = with pkgs; [
+              foundry-bin
+              solc_0_8_23
+              (solc.mkDefault pkgs solc_0_8_23)
+            ];
+
+            shellHook = ''
+              forge install
+            '';
+          };
       });
 }
