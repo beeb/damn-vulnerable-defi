@@ -8,6 +8,7 @@ import { FlashLoanerPool } from "src/05-TheRewarder/FlashLoanerPool.sol";
 import { TheRewarderPool } from "src/05-TheRewarder/TheRewarderPool.sol";
 import { RewardToken } from "src/05-TheRewarder/RewardToken.sol";
 import { AccountingToken } from "src/05-TheRewarder/AccountingToken.sol";
+import { Attack } from "src/05-TheRewarder/Attack.sol";
 
 contract TestSideEntrance is BaseFixture {
     uint256 public constant TOKENS_IN_LENDER_POOL = 1e6 ether;
@@ -62,6 +63,26 @@ contract TestSideEntrance is BaseFixture {
         rewarderPool.distributeRewards();
     }
 
+    function test_setUp() public view {
+        assertEq(accountingToken.owner(), address(rewarderPool), "accounting token owner");
+        assertTrue(
+            accountingToken.hasAllRoles(
+                address(rewarderPool),
+                accountingToken.MINTER_ROLE() | accountingToken.SNAPSHOT_ROLE() | accountingToken.BURNER_ROLE()
+            )
+        );
+
+        assertEq(accountingToken.balanceOf(alice), DEPOSIT_AMOUNT, "alice's deposit amount");
+        assertEq(accountingToken.balanceOf(bob), DEPOSIT_AMOUNT, "bob's deposit amount");
+        assertEq(accountingToken.balanceOf(charlie), DEPOSIT_AMOUNT, "charlie's deposit amount");
+        assertEq(accountingToken.balanceOf(david), DEPOSIT_AMOUNT, "david's deposit amount");
+
+        assertEq(accountingToken.totalSupply(), 4 * DEPOSIT_AMOUNT, "accounting token total supply");
+        assertEq(rewardToken.totalSupply(), rewarderPool.REWARDS(), "reward token total supply");
+        assertEq(liquidityToken.balanceOf(player), 0, "player's liquidity token balance");
+        assertEq(rewarderPool.roundNumber(), 2, "round number");
+    }
+
     function checkSuccess() internal {
         assertEq(rewarderPool.roundNumber(), 3, "round number");
 
@@ -88,28 +109,13 @@ contract TestSideEntrance is BaseFixture {
         );
     }
 
-    function test_setUp() public view {
-        assertEq(accountingToken.owner(), address(rewarderPool), "accounting token owner");
-        assertTrue(
-            accountingToken.hasAllRoles(
-                address(rewarderPool),
-                accountingToken.MINTER_ROLE() | accountingToken.SNAPSHOT_ROLE() | accountingToken.BURNER_ROLE()
-            )
-        );
-
-        assertEq(accountingToken.balanceOf(alice), DEPOSIT_AMOUNT, "alice's deposit amount");
-        assertEq(accountingToken.balanceOf(bob), DEPOSIT_AMOUNT, "bob's deposit amount");
-        assertEq(accountingToken.balanceOf(charlie), DEPOSIT_AMOUNT, "charlie's deposit amount");
-        assertEq(accountingToken.balanceOf(david), DEPOSIT_AMOUNT, "david's deposit amount");
-
-        assertEq(accountingToken.totalSupply(), 4 * DEPOSIT_AMOUNT, "accounting token total supply");
-        assertEq(rewardToken.totalSupply(), rewarderPool.REWARDS(), "reward token total supply");
-        assertEq(liquidityToken.balanceOf(player), 0, "player's liquidity token balance");
-        assertEq(rewarderPool.roundNumber(), 2, "round number");
-    }
-
     function test() public {
+        skip(5 days);
+
         vm.prank(player);
-        // checkSuccess();
+        Attack attack = new Attack(flashLoanPool, rewarderPool);
+
+        attack.attack();
+        checkSuccess();
     }
 }
